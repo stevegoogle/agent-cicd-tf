@@ -1,6 +1,6 @@
 
 # Get project information to access the project number
-data "google_project" "staging_project" {
+data "google_project" "the_project" {
   project_id = var.project_id
 }
 
