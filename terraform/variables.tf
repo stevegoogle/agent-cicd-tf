@@ -1,16 +1,3 @@
-# Copyright 2026 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 variable "project_name" {
   type        = string
@@ -30,13 +17,12 @@ variable "region" {
 }
 
 variable "host_connection_name" {
-  description = "Name of the host connection to create in Cloud Build"
+  description = "Name of the host connection created in Cloud Build"
   type        = string
-  default     = "lab-agent-github-connection"
 }
 
 variable "repository_name" {
-  description = "Name of the repository you'd like to connect to Cloud Build"
+  description = "Name of the GitHub repository you'd like to connect to Cloud Build"
   type        = string
 }
 
@@ -73,34 +59,8 @@ variable "cicd_roles" {
 
 
 variable "repository_owner" {
-  description = "Owner of the Git repository - username or organization"
+  description = "Owner of the GitHub repository - username or organization"
   type        = string
-}
-
-
-variable "github_app_installation_id" {
-  description = "GitHub App Installation ID for Cloud Build"
-  type        = string
-  default     = null
-}
-
-
-variable "github_pat_secret_id" {
-  description = "GitHub PAT Secret ID created by gcloud CLI"
-  type        = string
-  default     = null
-}
-
-variable "create_cb_connection" {
-  description = "Flag indicating if a Cloud Build connection already exists"
-  type        = bool
-  default     = false
-}
-
-variable "create_repository" {
-  description = "Flag indicating whether to create a new Git repository"
-  type        = bool
-  default     = false
 }
 
 
