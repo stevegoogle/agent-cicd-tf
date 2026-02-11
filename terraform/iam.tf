@@ -1,0 +1,63 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Data source to get project number
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+# Assign roles to CICD runner service account
+resource "google_project_iam_member" "cicd_project_roles" {
+  for_each = toset(var.cicd_roles)
+
+  project    = var.project_id
+  role       = each.value
+  member     = "serviceAccount:${resource.google_service_account.cicd_runner_sa.email}"
+  depends_on = [resource.google_project_service.services]
+}
+
+# Grant application SA the required permissions to run the application
+resource "google_project_iam_member" "app_sa_roles" {
+  for_each = toset(var.app_sa_roles)
+
+  project    = var.project_id
+  role       = each.value
+  member     = "serviceAccount:${google_service_account.app_sa.email}"
+  depends_on = [resource.google_project_service.services]
+}
+
+# Allow Cloud Run service SA to pull containers from Artifact Registry
+resource "google_project_iam_member" "run_artifact_registry_reader" {
+  project = var.project_id
+
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
+  depends_on = [resource.google_project_service.services]
+}
+
+# Allow the CICD SA to create tokens
+resource "google_service_account_iam_member" "cicd_token_creator" {
+  service_account_id = google_service_account.cicd_runner_sa.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${resource.google_service_account.cicd_runner_sa.email}"
+  depends_on         = [resource.google_project_service.services]
+}
+
+# Allow the CICD SA to impersonate itself for trigger creation
+resource "google_service_account_iam_member" "cicd_account_user" {
+  service_account_id = google_service_account.cicd_runner_sa.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${resource.google_service_account.cicd_runner_sa.email}"
+  depends_on         = [resource.google_project_service.services]
+}

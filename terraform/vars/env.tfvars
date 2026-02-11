@@ -1,0 +1,9 @@
+project_id = "steve-demo-cicd-f04-stage"
+region = "us-central1"
+repository_name = "test-agent-cicd"
+repository_owner = "stevelockwood"
+host_connection_name = "ci-cd-lab"
+create_cb_connection = false
+create_repository = false
+github_app_installation_id = "18663973"
+github_pat_secret_id = "ci-cd-lab-github-oauthtoken-b33b36"

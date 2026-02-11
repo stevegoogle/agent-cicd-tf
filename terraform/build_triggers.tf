@@ -1,0 +1,52 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Create staging deployment trigger
+resource "google_cloudbuild_trigger" "staging_deployment" {
+  name            = "deploy-${var.project_name}-staging"
+  project         = var.project_id
+  location        = var.region
+  service_account = resource.google_service_account.cicd_runner_sa.id
+  description     = "Trigger for staging deployment on push to repository"
+
+  repository_event_config {
+    repository = "projects/${var.project_id}/locations/${var.region}/connections/${var.host_connection_name}/repositories/${var.repository_name}"
+    push {
+      branch = ".*"
+    }
+  }
+
+  filename = ".cloudbuild/staging.yaml"
+  included_files = [
+    "app/**",
+    "data_ingestion/**",
+    "tests/**",
+    "deployment/**",
+    "uv.lock"
+  ]
+  include_build_logs = "INCLUDE_BUILD_LOGS_WITH_STATUS"
+  substitutions = {
+    _PROJECT_ID                  = var.project_id
+    _LOGS_BUCKET_NAME            = resource.google_storage_bucket.logs_data_bucket.name
+    _APP_SERVICE_ACCOUNT         = google_service_account.app_sa.email
+    _REGION                      = var.region
+    _CONTAINER_NAME              = var.project_name
+    _ARTIFACT_REGISTRY_REPO_NAME = resource.google_artifact_registry_repository.repo-artifacts-genai.repository_id
+  }
+  depends_on = [
+    resource.google_project_service.services,
+    google_cloudbuildv2_connection.github_connection,
+    google_cloudbuildv2_repository.repo
+  ]
+}
