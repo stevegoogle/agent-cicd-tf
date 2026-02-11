@@ -6,7 +6,7 @@ data "google_project" "the_project" {
 
 # Cloud Run place holder service for the agent
 # This terraform code currently deploys the hello container ("us-docker.pkg.dev/cloudrun/container/hello")
-# when the CI/CD pipeline runs it will deploy the agemt's container image
+# when the CI/CD pipeline runs it will deploy the agent's container image
 resource "google_cloud_run_v2_service" "app" {
   name                = var.project_name
   location            = var.region
