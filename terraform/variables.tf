@@ -7,7 +7,7 @@ variable "project_name" {
 
 variable "project_id" {
   type        = string
-  description = "Google Cloud Project ID for resource deployment (CI/CD and staging environment)."
+  description = "Google Cloud Project ID for resource deployment."
 }
 
 variable "region" {
@@ -17,7 +17,7 @@ variable "region" {
 }
 
 variable "host_connection_name" {
-  description = "Name of the host connection created in Cloud Build"
+  description = "Name of the host connection to create in Cloud Build"
   type        = string
 }
 
