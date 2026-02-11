@@ -1,6 +1,4 @@
 
-
-
 terraform {
   required_version = ">= 1.0.0"
   required_providers {
@@ -19,3 +17,8 @@ terraform {
   }
 }
 
+
+provider "google" {
+  region                = var.region
+  user_project_override = true
+}
