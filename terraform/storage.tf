@@ -1,9 +1,4 @@
 
-provider "google" {
-  region                = var.region
-  user_project_override = true
-}
-
 # Create storage bucket to hold logs that are exported from Cloud logging
 # These logs will then be injested into BigQuery
 resource "google_storage_bucket" "logs_data_bucket" {
