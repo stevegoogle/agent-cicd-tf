@@ -68,3 +68,13 @@ resource "google_cloud_run_v2_service" "app" {
     google_project_service.services,
   ]
 }
+
+# Make the service public so we can easily test it during this lab
+resource "google_cloud_run_v2_service_iam_member" "public_access" {
+  project  = var.project_id
+  location = var.region
+  name     = google_cloud_run_v2_service.app.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
+
