@@ -1,6 +1,5 @@
-project_id = "qwiklabs-gcp-01-54b852701014"
-region = "us-central1"
-repository_name = "agent-cdci-feb10"
-repository_owner = "stevelockwood"
-host_connection_name = "test-cicd-lab"
-
+project_id = "YOUR_GOOGLE_PROJECT_ID"
+region = "YOUR_REGION"
+repository_name = "YOUR_GITHUB_REPO"
+repository_owner = "YOUR_GITHUB_OWNER"
+host_connection_name = "my-github-connection" # this is your Cloud Build connection name
