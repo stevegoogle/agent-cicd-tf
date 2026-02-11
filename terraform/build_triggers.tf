@@ -1,10 +1,10 @@
 # Create staging deployment trigger
-resource "google_cloudbuild_trigger" "staging_deployment" {
-  name            = "deploy-${var.project_name}-staging"
+resource "google_cloudbuild_trigger" "deployment_trigger" {
+  name            = "deploy-${var.project_name}"
   project         = var.project_id
   location        = var.region
   service_account = resource.google_service_account.cicd_runner_sa.id
-  description     = "Trigger for staging deployment on push to repository"
+  description     = "Trigger for deployment on push to repository"
 
   repository_event_config {
     repository = "projects/${var.project_id}/locations/${var.region}/connections/${var.host_connection_name}/repositories/${var.repository_name}"
@@ -13,7 +13,7 @@ resource "google_cloudbuild_trigger" "staging_deployment" {
     }
   }
 
-  filename = ".cloudbuild/staging.yaml"
+  filename = "./cloudbuild.yaml"
   included_files = [
     "app/**",
     "data_ingestion/**",
