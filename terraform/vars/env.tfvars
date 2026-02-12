@@ -1,9 +1,0 @@
-project_id = "qwiklabs-gcp-01-54b852701014"
-region = "us-central1"
-repository_name = "agent-cdci-feb10"
-repository_owner = "stevelockwood"
-host_connection_name = "ci-cd-lab"
-#create_cb_connection = false
-#create_repository = false
-# github_app_installation_id = "18663973"
-# github_pat_secret_id = "ci-cd-lab-github-oauthtoken-b33b36"
